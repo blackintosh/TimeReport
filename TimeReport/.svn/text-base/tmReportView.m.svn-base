@@ -1,0 +1,193 @@
+//
+//  tmReportView.m
+//  TimeReport
+//
+//  Created by Nils Cronstedt on 2012-02-23.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import "tmReportView.h"
+#import "Database.h"
+
+@implementation tmReportView
+
+//@synthesize myToolBar;
+
+//@synthesize mydateFormatter;
+//@synthesize mytimeFormatter;
+
+
+//@synthesize myTableBar, myViewBar;
+// Data koppling
+@synthesize mySqlString, myResultView;
+
+
+
+//@synthesize myEditBar;
+//@synthesize mySelectedRow;
+@synthesize myTableView;
+//@synthesize myDbID;
+
+
+- (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
+{
+    self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)didReceiveMemoryWarning
+{
+    // Releases the view if it doesn't have a superview.
+    [super didReceiveMemoryWarning];
+    
+    // Release any cached data, images, etc that aren't in use.
+}
+
+#pragma mark - View lifecycle
+/*
+- (void)tableView:(UITableView *)tableView accessoryButtonTappedForRowWithIndexPath:(NSIndexPath *)indexPath
+{
+    int i=1;   
+}
+
+*/
+
+
+
+-(NSMutableArray *)myReportData
+{
+    database *mydatabase =[[database alloc] init];
+    mySqlString = [NSString stringWithFormat:@"select sum(timmar),(select namn from kund where id = t.kund),datum from time t group by datum order by datum"];
+    myResultView = [mydatabase getReportView:mySqlString];
+    return  myResultView;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    
+    //UITableView *
+    myTableView = [[UITableView alloc]initWithFrame:CGRectMake(0, 44, 320, 372) style:UITableViewStylePlain];
+	[myTableView setDataSource:self];
+	[myTableView setDelegate:self];
+	[self.view addSubview:myTableView]; 
+    
+}
+
+
+
+- (NSString *)myStringTime:(int)decimaltid
+{
+    int timmar;
+    int minuter;
+    NSString *tTid;
+    NSString *tMinuter;
+    timmar = floor(decimaltid/60);
+    minuter = round(decimaltid - timmar * 60);
+    //NSString *tTimmar = [NSString stringWithFormat:@"%d", timmar];
+    if (minuter < 10 ) {
+        tMinuter = [NSString stringWithFormat:@"0%d", minuter];
+    } else {
+        tMinuter = [NSString stringWithFormat:@"%d", minuter];
+    }
+    if (timmar < 10 ) {
+        tTid = [NSString stringWithFormat:@"0%d:%@", timmar,tMinuter];        
+    } else {
+        tTid = [NSString stringWithFormat:@"%d:%@", timmar,tMinuter];
+    }
+    return tTid;
+}
+
+- (NSString *)myStringDate:(NSString *)datum
+{
+
+    NSMutableString *nystring = [NSMutableString stringWithString:datum];
+    
+    
+
+    //[nystring insertString: @"-" atIndex: 4];
+    //[nystring insertString: @"-" atIndex: 7];
+    datum = nystring;
+    return datum;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    database *mydatabase =[[database alloc] init];
+    
+    mySqlString = [NSString stringWithFormat:@"select count(datum) from antal"];        
+    
+    NSString *antal = [mydatabase getData:mySqlString];
+    int i = [antal intValue];
+    return i;
+}
+
+
+
+-(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+    return 1;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    NSUInteger indexRow = [indexPath row];
+    int pos;
+    myResultView = [self myReportData];
+    static NSString *CellIdentifier = @"Cell";
+    
+    UITableViewCell *cell = (UITableViewCell *) [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    if (cell == nil) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleSubtitle reuseIdentifier:CellIdentifier];
+        cell.accessoryType =  UITableViewCellAccessoryDetailDisclosureButton;
+        UIView *bg =[[UIView alloc] initWithFrame:cell.frame];
+        if (indexRow % 2) {
+            bg.backgroundColor = [UIColor colorWithRed: 1 green: 0.890 blue:0.769 alpha: 1.0];
+        } else {
+            bg.backgroundColor = [UIColor whiteColor];
+        }
+        cell.selectionStyle = UITableViewCellSelectionStyleNone; 
+        cell.backgroundView = bg;
+        cell.textLabel.backgroundColor  = bg.backgroundColor;
+        cell.detailTextLabel.backgroundColor  = bg.backgroundColor; 
+        bg = nil;
+    }
+    pos = indexRow *3;
+    if ([myResultView count] >= (pos +3) ){
+        cell.detailTextLabel.textColor = [UIColor blackColor];
+        cell.textLabel.font = [UIFont fontWithName:@"Helvetica" size:12.0]; 
+        cell.detailTextLabel.font = [UIFont fontWithName:@"Helvetica" size:14.0];
+        
+        int decimaltid = [[myResultView objectAtIndex:(pos)] intValue];
+        NSMutableString *datum = [myResultView objectAtIndex:(pos +2)];
+        NSString *mydatum = [self myStringDate:datum ];
+        NSString *kund  = [myResultView objectAtIndex:(pos +1)];
+        cell.textLabel.text = kund;
+        //cell.detailTextLabel.text = [NSString stringWithFormat:@"In  %@ Ut %@ abetad tid %@",[myResultView objectAtIndex:(pos)],utTid,[self myStringTime :decimaltid]]; 
+                [[cell detailTextLabel] setText:[NSString stringWithFormat:@"Abetad tid %@  datum %@ ",[self myStringTime :decimaltid],mydatum ]];
+        
+        kund =nil;
+        datum = nil;
+    }
+    
+    
+    return cell;  
+}
+
+
+- (void)viewDidUnload
+{
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    // Return YES for supported orientations
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+@end

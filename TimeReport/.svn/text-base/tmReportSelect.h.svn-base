@@ -1,0 +1,18 @@
+//
+//  tmReportSelect.h
+//  TimeReport
+//
+//  Created by Nils Cronstedt on 2012-04-03.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface tmReportSelect : UITableViewController
+@property (weak, nonatomic) IBOutlet UISearchBar *mySelect;
+@property (weak, nonatomic) IBOutlet UITableView *myTableView1;
+@property (strong, nonatomic) IBOutlet UISearchBar *mySearch;
+
+@property (strong, nonatomic) IBOutlet UISegmentedControl *mySelected;
+@property (weak, nonatomic) IBOutlet UITableView *MyTableView2;
+@end

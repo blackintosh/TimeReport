@@ -1,0 +1,214 @@
+//
+//  tmReportSelect.m
+//  TimeReport
+//
+//  Created by Nils Cronstedt on 2013-08-15.
+//  Copyright (c) Nils Cronstedt 2013 All rights reserved.
+//
+
+#import "tmReportSelect.h"
+#import "Database.h"
+
+@interface tmReportSelect ()
+
+@end
+
+@implementation tmReportSelect
+@synthesize mySelect;
+@synthesize myTableView1;
+@synthesize mySearch;
+@synthesize mySelected;
+@synthesize MyTableView2;
+
+- (id)initWithStyle:(UITableViewStyle)style
+{
+    self = [super initWithStyle:style];
+    if (self) {
+        // Custom initialization
+    }
+    return self;
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+
+    // Uncomment the following line to preserve selection between presentations.
+    // self.clearsSelectionOnViewWillAppear = NO;
+ 
+    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
+    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+}
+
+- (void)viewDidUnload
+{
+    [self setMySelect:nil];
+    [self setMyTableView1:nil];
+    [self setMyTableView2:nil];
+    [self setMySearch:nil];
+    [self setMySelected:nil];
+    [self setMySelecteddate:nil];
+    [self setMySelectedkus:nil];
+    [super viewDidUnload];
+    // Release any retained subviews of the main view.
+    // e.g. self.myOutlet = nil;
+}
+
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
+{
+    return (interfaceOrientation == UIInterfaceOrientationPortrait);
+}
+
+#pragma mark - Table view data source
+- (void)searchBarTextDidBeginEditing:(UISearchBar *)searchBar {
+    [searchBar setShowsCancelButton:YES animated:YES];
+    
+}
+
+- (void) searchBarSearchButtonClicked:(UISearchBar *)theSearchBar
+{
+    database *mydatabase =[[database alloc] init];
+    NSString *result = theSearchBar.text;
+    NSString *mySqlString = [NSString stringWithFormat:@"select id from kund where namn = '%@'",result]; 
+    result = [mydatabase getData:mySqlString];
+    [theSearchBar resignFirstResponder];
+}
+
+- (void) searchBarCancelButtonClicked:(UISearchBar *)mySelected1
+{
+    mySelected1.text = @"";
+    [mySelected1 resignFirstResponder];
+}
+
+
+
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    database *mydatabase =[[database alloc] init];
+    
+    //NSString *result = [segue identifier];
+    int i = 2;
+    if (_mySelecteddate.on == true)
+    {
+        i=0;
+    }
+    if (_mySelectedkus.on == true)
+    {
+        i=1;
+    }
+    
+    
+    NSString *mySqlString = [NSString stringWithFormat:@"update status set grup = '%d'",i];
+    [mydatabase addData:mySqlString];
+    
+    if ([[segue identifier] isEqualToString:@"ett"])
+    {
+        mySqlString = @"update status set sort = '1'";
+        [mydatabase addData:mySqlString];
+    }
+    if ([[segue identifier] isEqualToString:@"tva"])
+    {
+        mySqlString = @"update status set sort = '2'";
+        [mydatabase addData:mySqlString];
+    }
+    if ([[segue identifier] isEqualToString:@"tre"])
+    {
+        mySqlString = @"update status set sort = '3'";
+        [mydatabase addData:mySqlString];
+    }
+    if ([[segue identifier] isEqualToString:@"fyra"])
+    {
+        mySqlString = @"update status set sort = '4'";
+        [mydatabase addData:mySqlString];
+    }
+    
+    mydatabase = nil;
+    mySqlString = nil;
+    //result = nil;
+}
+/*
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+#warning Potentially incomplete method implementation.
+    // Return the number of sections.
+    return 0;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+#warning Incomplete method implementation.
+    // Return the number of rows in the section.
+    return 0;
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"Cell";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
+    
+    // Configure the cell...
+    
+    return cell;
+}
+
+
+// Override to support conditional editing of the table view.
+- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the specified item to be editable.
+    return YES;
+}
+*/
+
+/*
+// Override to support editing the table view.
+- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (editingStyle == UITableViewCellEditingStyleDelete) {
+        // Delete the row from the data source
+        [tableView deleteRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
+    }   
+    else if (editingStyle == UITableViewCellEditingStyleInsert) {
+        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
+    }   
+}
+*/
+
+/*
+// Override to support rearranging the table view.
+- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
+{
+}
+*/
+
+/*
+// Override to support conditional rearranging of the table view.
+- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Return NO if you do not want the item to be re-orderable.
+    return YES;
+}
+
+
+#pragma mark - Table view delegate
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    // Navigation logic may go here. Create and push another view controller.
+    
+     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
+     // ...
+     // Pass the selected object to the new view controller.
+     [self.navigationController pushViewController:detailViewController animated:YES];
+   
+}
+*/
+- (IBAction)myDateSelected:(id)sender {
+    _mySelectedkus.on=false;
+}
+
+- (IBAction)myKustselected:(id)sender {
+    _mySelecteddate.on=false;
+}
+@end

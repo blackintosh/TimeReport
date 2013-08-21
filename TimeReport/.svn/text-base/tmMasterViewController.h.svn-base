@@ -1,0 +1,12 @@
+//
+//  tmMasterViewController.h
+//  TimeReport
+//
+//  Created by svp on 2012-01-26.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface tmMasterViewController : UITableViewController<UITableViewDelegate, UITableViewDataSource>
+@end

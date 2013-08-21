@@ -1,0 +1,33 @@
+//  tmKundDetail.h
+//  TimeReport
+//
+//  Created by Nils Cronstedt on 2012-03-12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface tmKundDetail : UIViewController
+@property (weak, nonatomic) IBOutlet UINavigationItem *myNavBar;
+@property (weak, nonatomic) IBOutlet UITextField *myKundNamn;
+@property (weak, nonatomic) IBOutlet UITextField *myKundAdress1;
+@property (weak, nonatomic) IBOutlet UITextField *myKundAdress2;
+@property (weak, nonatomic) IBOutlet UITextField *myKontaktNamn;
+@property (weak, nonatomic) IBOutlet UITextField *myKontaktTel;
+@property (weak, nonatomic) IBOutlet UITextField *myKontaktEpost;
+@property (weak, nonatomic) IBOutlet UITextView *myExtraInfo;
+
+@property (weak, nonatomic) IBOutlet UINavigationItem *myNavBar2;
+
+@property (retain, nonatomic) NSString *mySqlString;
+@property (retain, nonatomic) NSArray *myResultView;
+@property (retain, nonatomic) UIToolbar *myToolBar;
+@property CGFloat animatedDistance;
+
+-(IBAction)myNykund;
+@property (weak, nonatomic) IBOutlet UINavigationItem *ToolBar;
+
+@property (weak, nonatomic) IBOutlet UIScrollView *myScroll;
+@property int myKundId;
+@property int nyKund;
+@end

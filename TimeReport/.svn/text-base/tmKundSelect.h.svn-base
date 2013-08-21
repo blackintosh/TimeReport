@@ -1,0 +1,25 @@
+//
+//  tmKundSelect.h
+//  TimeReport
+//
+//  Created by Nils Cronstedt on 2012-03-12.
+//  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
+//
+
+#import <UIKit/UIKit.h>
+
+@interface tmKundSelect : UIViewController
+@property (weak, nonatomic) IBOutlet UITableView *myTabelView;
+@property (weak, nonatomic) IBOutlet UIBarButtonItem *myAddButton;
+
+@property (retain, nonatomic) NSString *mySqlString;
+@property (retain, nonatomic) NSMutableArray *myResultView;
+@property int myRowId;
+@property (retain, nonatomic) NSString *myKund;
+
+-(NSMutableArray *)myReportData;
+
+- (IBAction) uppdate;
+-(void)mySelectedRow:(int)myRow;
+
+@end

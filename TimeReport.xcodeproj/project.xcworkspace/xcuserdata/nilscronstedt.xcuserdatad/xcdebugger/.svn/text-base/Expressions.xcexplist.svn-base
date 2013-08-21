@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<VariablesViewState
+   version = "1.0">
+   <ContextStates>
+      <ContextState
+         contextName = "-[tmKundDetail prepareForSegue:sender:]:tmKundDetail.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(__NSCFString *)(((&apos;tmKundDetail&apos; *) (self)))-&gt;mySqlString">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[tmReportDetail myReportData]:tmReportDetail.m">
+      </ContextState>
+      <ContextState
+         contextName = "-[database getReportView:]:Database.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(const char *)(null)">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+      <ContextState
+         contextName = "-[database addData:]:Database.m">
+         <PersistentStrings>
+            <PersistentString
+               value = "(__NSCFString *)addSql">
+            </PersistentString>
+         </PersistentStrings>
+      </ContextState>
+   </ContextStates>
+</VariablesViewState>
